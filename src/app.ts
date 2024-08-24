@@ -1,5 +1,9 @@
 import fastify from 'fastify';
-import { userRoutes } from './routes/user'
+import { userRoutes } from './routes/userRoutes'
+import fastifyCookie from '@fastify/cookie';
 
-const app = fastify()
-
+export const app = fastify()
+app.register(fastifyCookie)
+app.register(userRoutes, {
+    prefix: 'user',
+})

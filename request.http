@@ -1,0 +1,9 @@
+POST http://localhost:3333/user
+Content-Type: application/json
+
+{
+    "name": "Daniel",
+    "surname": "Sângelo",
+    "email": "daniel@mail.com",
+    "birthDate": "1992-09-01"
+}

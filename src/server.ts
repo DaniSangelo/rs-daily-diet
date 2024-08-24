@@ -1,9 +1,7 @@
-import fastify from 'fastify'
+import { app } from './app'
 import 'dotenv/config'
 
-export const server = fastify()
-
-server.listen({
+app.listen({
     port:  +process.env.PORT || 3000,
     host: ("RENDER" in process.env) ? '0.0.0.0' : '127.0.0.1'
 }, (err, _) => {
