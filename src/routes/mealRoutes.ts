@@ -60,4 +60,22 @@ export async function mealRoutes(app: FastifyInstance) {
         await knex('meal').delete(id)
         res.status(204).send()
     })
+
+    app.get('/', { preHandler: [setUser]}, async (req, res) => {
+        const meals = await knex
+            .from('meal')
+            .select();
+        return res.status(200).send({ meals })
+    })
+
+    app.get('/:id',
+        {
+            preHandler: [setUser]
+        },
+        async (req, res) => {
+        const paramsSchema = z.object({ id: z.string().uuid() })
+        const { id } = paramsSchema.parse(req.params)
+        const meal = await knex('meal').where({ id }).select().first()
+        res.status(200).send({meal})
+    })
 }
