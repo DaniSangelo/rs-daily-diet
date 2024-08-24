@@ -78,4 +78,14 @@ export async function mealRoutes(app: FastifyInstance) {
         const meal = await knex('meal').where({ id }).select().first()
         res.status(200).send({meal})
     })
+
+    app.get('/statistics', { preHandler: [setUser]}, async (req, res) => {
+        const meals = await knex('meal').where({ userId: req?.userId}).select()
+        const totalOnDiet = meals.reduce((acc, curr) => Boolean(curr.isOnDiet) == true ? ++acc : acc, 0)
+        return res.status(200).send({
+            total: meals.length,
+            totalOnDiet: totalOnDiet,
+            totalOutDiet: meals.length - totalOnDiet
+        })
+    })
 }
