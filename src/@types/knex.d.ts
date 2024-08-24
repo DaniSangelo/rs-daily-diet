@@ -1,4 +1,5 @@
 import { Knex } from "knex";
+import { number } from "zod";
 
 declare module 'knex/types/tables' {
     export interface Tables {
@@ -12,5 +13,16 @@ declare module 'knex/types/tables' {
             created_at: string,
             updated_at: string,
         },
+
+        meal: {
+            id: string,
+            userId: string,
+            name: string,
+            description: string,
+            mealDate: string,
+            isOnDiet: boolean,
+            created_at: string,
+            updated_at: string,
+        }
     }
 }

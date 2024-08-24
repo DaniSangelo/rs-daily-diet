@@ -52,6 +52,6 @@ export async function userRoutes(app: FastifyInstance) {
             updated_at: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
             ...updateData
         });
-        res.status(204).send()
+        return res.status(204).send()
     })
 }
