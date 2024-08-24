@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { FastifyInstance } from "fastify";
 import { z } from 'zod'
 import { knex } from '../database'
+import { format } from 'date-fns';
 
 export async function userRoutes(app: FastifyInstance) {
     app.post('/', async (req, res) => {
@@ -36,5 +37,21 @@ export async function userRoutes(app: FastifyInstance) {
             sessionId,
         });
         return res.status(201).send()
+    })
+
+    app.put('/', async (req, res) => {
+        const updateUserSchema = z.object({
+            surname: z.string().nullable(),
+            birthDate: z.string().date().nullable()
+        })
+        const updateData = updateUserSchema.parse(req.body);
+        const sessionId = req.cookies.sessionId
+        const user = await knex('user').where({ sessionId: sessionId}).first();
+        if (!user) res.status(400).send({ message: 'User does not exist' });
+        await knex('user').update({
+            updated_at: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
+            ...updateData
+        });
+        res.status(204).send()
     })
 }
